@@ -10,12 +10,15 @@ connectDB()
 const app = express()
 app.use(cors()) // Enable Cross-Origin Resource Sharing
 
+// ✅ Clerk Webhooks: Must use express.raw BEFORE express.json
+app.post("/api/clerk", express.raw({ type: "application/json" }), clerkWebhooks);
+
 //Middleware
 app.use(express.json())
 app.use(clerkMiddleware())
 
 //API to listen to Clerk Webhooks
-app.use("/api/clerk", clerkWebhooks)
+//app.use("/api/clerk", clerkWebhooks)
 
 //app.post("/webhooks/clerk", express.raw({ type: "application/json" }), clerkWebhooks);
 
